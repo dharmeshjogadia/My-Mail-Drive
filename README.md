@@ -1,4 +1,6 @@
 My-Mail-Drive
 =============
 
-Intra-communication mail system for any organisation
+Pre-requisite Tools and Technology
+•	visual studio 2010
+•	Microsoft SQL Server 2008
