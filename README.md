@@ -24,5 +24,5 @@ After installing above software
     <add key="DataBaseName" value="myMail"/>
   </appSettings>
 </code>
-<pre>
+</pre>
 Modify above tag value as per your MS SQl Server settings.
