@@ -15,13 +15,14 @@ After installing above software
 
 * Project Settings in Visual studio
 1.	Now change web.cong file which is XML Configuration file, it placed    at ProjMailDrive. Open file and modify it for database settings
-
-<blockquote>
+<pre>
+<code>
 <appSettings>
     <add key="ServerName" value="."/>
     <add key="UserName" value="sa"/>
     <add key="Password" value=""/>
     <add key="DataBaseName" value="myMail"/>
   </appSettings>
-</blockquote>
+</code>
+<pre>
 Modify above tag value as per your MS SQl Server settings.
