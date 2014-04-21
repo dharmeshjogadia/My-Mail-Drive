@@ -1,0 +1,162 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterPage.master.cs"  EnableTheming="true"  Inherits="MasterPage" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1" runat="server">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
+    <title>Mail Drive</title>
+    <!-- Bootstrap core CSS -->
+    
+    <%--<link href="css-yeti/bootstrap.min.css" rel="stylesheet" type="text/css" />--%>
+    <link href="css-yeti/mycss.css" rel="stylesheet" type="text/css" />
+    <%--<link href="css-yeti/cosmo.css" rel="stylesheet" type="text/css" />--%>
+    <%--<link href="css-yeti/lumen.css" rel="stylesheet" type="text/css" />--%>
+    <%--<link href="css-yeti/superbhero.css" rel="stylesheet" type="text/css" />--%>
+    <script src="js/jquery-1.11.0.min.js"></script>
+    <script src="ckeditor/ckeditor.js"></script>
+    <!-- Custom styles for this template -->
+    <!-- Just for debugging purposes. Don't actually copy this line! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9] [endif]-->
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    
+</head>
+<body>
+<link href="css-yeti/<%=theme %>" rel="stylesheet" type="text/css" />
+    <form id="form1" runat="server">
+    <asp:ScriptManager ID="sm" runat="server">
+    </asp:ScriptManager>
+    <div>
+        <div class="navbar-default" role="banner">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed btn btn-info" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span><span
+                            class="icon-bar"></span><span class="icon-bar"></span>
+                    </button>
+                    <h3>
+                    <a href="#" class="text-primary">
+                    <img class="img-responsive pull-left" src="image/mymaildrive3.png"  height="45px" width="35px" />
+                    <span>My Mail Drive</span></a>
+                    </h3>
+                </div>
+                <div class="navbar-collapse collapse" style="height: 1px;">
+                    <div class="navbar-form navbar-right" role="form">
+                        <div class="form-group">
+                            <asp:TextBox ID="txtSearch" runat="server" placeholder="Search" class="form-control" />
+                        </div>
+                        <asp:LinkButton ID="btnSeach" runat="server" CssClass="glyphicon glyphicon-search btn-primary btn">
+                        </asp:LinkButton>
+                        <asp:LinkButton ID="LinkButton1" runat="server" CssClass="btn btn-danger glyphicon glyphicon-off"
+                        OnClick="btnLogout_click"
+                        >
+                        </asp:LinkButton>
+
+                        
+                    </div>
+                </div>
+                <!--/.navbar-collapse -->
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-4 col-md-2 sidebar">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle menuBtn btn-primary collapsed bg-primary"
+                            data-toggle="collapse" data-target=".sidebar-collapse">
+                            <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span><span
+                                class="icon-bar"></span><span class="icon-bar"></span>
+                        </button>
+                        <div class="container">
+                        <a href="#" class="">
+                            
+                                <img width="170px"  src="<%=photoPath%>" class="img-thumbnail" alt="User Img" />
+                                <br />
+                                <%=userName%>
+                            
+                        </a>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                    </div>
+                    <div class="navbar collapse navbar-collapse sidebar-collapse" role="navigation">
+                        <div class="navbar-default ">
+                            <ul class="nav nav-pills nav-stacked">
+                                <li class=""><a href="ComposeMail.aspx"><span class="glyphicon glyphicon-edit"></span>
+                                    Compose Mail</a> </li>
+                                <li><a href="Inbox.aspx"><span class="glyphicon glyphicon-envelope"></span>
+                                 Inbox</a>
+                                </li>
+                                <li><a href="Sent.aspx"><span class="glyphicon glyphicon-check"></span>
+                                 Sent</a> </li>
+                                <li><a href="#"><span class="glyphicon glyphicon-floppy-disk"></span>
+                                    Draft</a> </li>
+                                <li><a href="Spam.aspx"><span class="glyphicon glyphicon-fire"></span>
+                                    Spam</a> </li>
+                                <li><a href="Trash.aspx"><span class="glyphicon glyphicon-trash"></span>
+                                    Trash</a> </li>
+                                <li><a href="DriveHome.aspx"><span class="glyphicon glyphicon-hdd"></span>
+                                    My Drive</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!--/.navbar-collapse -->
+                    </div>
+                </div>
+                <asp:UpdatePanel ID="up1" runat="server">
+                    <ContentTemplate>
+                        <div class="col-sm-4 col-md-8 mainContainer">
+                            <nav class="navbar innerManu">
+                                <ul class="nav nav-pills">
+                                    <li class="">
+                                                <a href="#">
+                      		                        <span class="glyphicon glyphicon-refresh"></span> Refresh</a></li>
+                                    <li><a href="UserSettings.aspx">                      		
+                      	                    <span class="glyphicon glyphicon-cog"></span> Settings</a></li>
+                                    <li><a href="UserContact.aspx"><span class="glyphicon glyphicon-list-alt"></span> Contacts</a></li>
+                                    <li><a href="UserProfile.aspx"><span class="glyphicon glyphicon-user"></span> My Profile</a></li>
+                                </ul>
+                    
+                            </nav>
+                            <asp:Label ID="Msg" ClientIDMode="Static" runat="server" CssClass="hidden navbar-fixed-top msg" />
+
+                            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                            </asp:ContentPlaceHolder>
+                        </div>
+
+                    </ContentTemplate>
+                </asp:UpdatePanel>
+                <%--<div class="col-sm-4 col-md-2 chatBox">
+                    <div class="panel-body">
+                        <input type="search" class="form-control" placeholder="Seach for Chat" />
+                    </div>
+                    <ul class="list-group">
+                        <li class="list-group-item">Chirag Thakker</li>
+                        <li class="list-group-item">Jignesh Patel</li>
+                        <li class="list-group-item">Dharmesh Jogadia</li>
+                        <li class="list-group-item">Virani Rahul</li>
+                        <li class="list-group-item">Kevin Jayawala</li>
+                    </ul>
+                </div>--%>
+            </div>
+            <footer>
+                        <p class="pull-right"><a href="#">Back to top</a></p>
+                        <p>© 2014 Company, Inc. · <a href="#">Privacy</a> · <a href="#">Terms</a></p>
+            </footer>
+        </div>
+    </form>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/myJS.js"></script>
+    <!-- Tabs ACTIVE -->
+    <script>
+       
+    </script>
+</body>
+</html>

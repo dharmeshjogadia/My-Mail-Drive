@@ -1,0 +1,747 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.IO;
+using System.Data;
+using System.Data.SqlClient;
+using System.Configuration;
+
+
+public enum LoginStatus
+{
+    ONLINE, OFFLINE
+}
+public enum AccountStatus
+{
+    BLOCKED, SUSPENDED, ACTIVE
+}
+public enum Gender
+{
+    MALE, FEMALE
+}
+public enum Priority
+{
+    LOW, MEDIUM, HIGH, VERY_HIGH
+}
+
+public class Privilege
+{
+    private string username;
+    private bool privilegeDescription;
+}
+public class User
+{
+    private string username;
+    private string password;
+    private string firstname;
+    private string lastName;
+    private Gender gender;
+    private DateTime dateOfBirth;
+    private string photoFile;
+
+    public string PhotoFile
+    {
+        get { return photoFile; }
+        set { photoFile = value; }
+    }
+    private String phoneNumber; //
+    private string securityQuestion;
+    private string answer;
+    private LoginStatus loginStatus; //
+    private AccountStatus astatus; //
+
+    public AccountStatus Astatus
+    {
+        get { return astatus; }
+        set { astatus = value; }
+    }
+    private List<Contact> contacts;
+    private Privilege privilege; //        
+    public string Username
+    {
+        get
+        {
+            return this.username;
+        }
+        set
+        {
+            this.username = value;
+        }
+    }
+    public string Password
+    {
+        set
+        {
+            this.password = value;
+        }
+    }
+    public string Firstname
+    {
+        get
+        {
+            return this.firstname;
+        }
+        set
+        {
+            this.firstname = value;
+        }
+    }
+    public string Lastname
+    {
+        get
+        {
+            return this.lastName;
+        }
+        set
+        {
+            this.lastName = value;
+        }
+    }
+    public Gender Gender
+    {
+        get
+        {
+            return this.gender;
+        }
+        set
+        {
+            this.gender = value;
+        }
+    }
+    public LoginStatus LStatus
+    {
+        set
+        {
+            loginStatus = value;
+        }
+        get
+        {
+            return loginStatus;
+        }
+    }
+    public string SecurityQuestion
+    {
+        get
+        {
+            return securityQuestion;
+        }
+        set
+        {
+            securityQuestion = value;
+        }
+    }
+    public DateTime DateOfBirth
+    {
+        get
+        {
+            return dateOfBirth;
+        }
+        set
+        {
+            dateOfBirth = value;
+        }
+    }
+    public string Answer
+    {
+        get
+        {
+            return answer;
+        }
+        set
+        {
+            answer = value;
+        }
+    }
+    public String PhoneNumber
+    {
+        get
+        {
+            return phoneNumber;
+        }
+        set
+        {
+            phoneNumber = value;
+        }
+    }
+    public List<Contact> UserContacts
+    {
+        get
+        {
+            return contacts;
+        }
+        set
+        {
+            contacts = value;
+        }
+    }
+    public Privilege UserPrivilege
+    {
+        get
+        {
+            return privilege;
+        }
+        set
+        {
+            privilege = value;
+        }
+    }
+    public static bool authenticateUser(string username, string password)
+    {
+        ConnectionMyMail x = new ConnectionMyMail();
+        string str = "select * from User where userId='" + username + "' and password='" + password + "'";
+        DataSet ds = new DataSet();
+        ds = x.search(str);
+        if (ds.Tables[0].Rows.Count > 0)
+            return true;
+        else
+            return false;
+    }
+    public bool createUser()
+    {
+        ConnectionMyMail x = new ConnectionMyMail();
+        String str = "insert into User values('" + this.username + "','" + this.password + "','" + this.firstname + "','" + this.lastName + "','" + this.gender + "','" + this.dateOfBirth + "','" + this.photoFile + "','" + this.phoneNumber + "','" + this.securityQuestion + "','" + this.answer + "','" + this.loginStatus + "','" + this.astatus + "')";
+        ConnectionMyMail x = new ConnectionMyMail();
+        x.exec(str);
+        return true;
+    }
+    public bool updateUserDetails()
+    {
+        try
+        {
+            string str = "update Contact set firstName='" + this.firstname + "',lastName='" + this.lastName + "',gender='" + this.gender + "',dateOfBirth='" + this.dateOfBirth + "',photoFile='" + this.photoFile + "',phoneNumber='" + this.phoneNumber + "',securityQuestion='" + this.securityQuestion + "',answer='" + this.answer + "',loginStatus='" + this.loginStatus + "',accountStatus='" + this.astatus + "' where userId='" + this.username + "'";
+            ConnectionMyMail x = new ConnectionMyMail();
+            x.exec(str);
+            return true;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+
+
+    }
+    public void AddContact(Contact c)
+    {
+        c.addContact(this.username);
+    }
+}
+public class Contact
+{
+    private string emailId;
+    private string firstname;
+    private string lastName;
+    private string phoneNumber;
+    private string organization;
+    public string Firstname
+    {
+        get { return firstname; }
+        set { firstname = value; }
+    }
+    public string LastName
+    {
+        get { return lastName; }
+        set { lastName = value; }
+    }
+    public string EmailId
+    {
+        get { return emailId; }
+        set { emailId = value; }
+    }
+    public string PhoneNumber
+    {
+        get { return phoneNumber; }
+        set { phoneNumber = value; }
+    }
+    public string Organization
+    {
+        get { return organization; }
+        set { organization = value; }
+    }
+
+    public bool addContact(string userName)
+    {
+        try
+        {
+            string str = "insert into Contact values('" + userName + "','" + this.emailId + "','" + this.firstname + "','" + this.lastName + "','" + this.phoneNumber + "','" + this.organization + "')";
+            ConnectionMyMail x = new ConnectionMyMail();
+            x.exec(str);
+            return true;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+
+    }
+    public bool deleteContact(string userName)
+    {
+        try
+        {
+            string str = "delete * from Contact where userId='" + userName + "' and emailId='" + this.emailId + "'";
+            ConnectionMyMail x = new ConnectionMyMail();
+            x.exec(str);
+            return true;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+
+    }
+    public bool updateContact(string userName)
+    {
+        try
+        {
+            string str = "update Contact set firstName='" + this.firstname + "',lastName='" + this.lastName + "',phoneNumber='" + this.phoneNumber + "',organization='" + this.organization + "' where userId='" + userName + "' and emailId='" + this.emailId + "'";
+            ConnectionMyMail x = new ConnectionMyMail();
+            x.exec(str);
+            return true;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+
+    }
+
+}
+public class MailSetting
+{
+    private int maxPageSize;
+    private string userName;
+    public string UserName
+    {
+        get { return userName; }
+        set { userName = value; }
+    }
+    private string theme;
+    public string Theme
+    {
+        get { return theme; }
+        set { theme = value; }
+    }
+
+    public bool insertMailSetting()
+    {
+        string str;
+        ConnectionMyMail x = new ConnectionMyMail();
+        str = "insert into MailSetting('" + this.userName + "'," + this.maxPageSize + ",'" + this.notification + "','" + this.signature + "','" + this.autoCreateContact + "','" + this.theme + "')";
+        x.exec(str);
+        return true;
+    }
+
+    public bool updateMailSetting(string userName)
+    {
+        string str;
+        ConnectionMyMail x = new ConnectionMyMail();
+        str = "update MailSetting set maxPageSize=" + this.maxPageSize + ",notification='" + this.notification + "',signature='" + this.signature + "',autoCreateContact='" + this.autoCreateContact + "',theme='" + this.theme + "' where userId='" + userName + "'";
+        x.exec(str);
+        return true;
+    }
+
+
+    public int MaxPageSize
+    {
+        get { return maxPageSize; }
+        set { maxPageSize = value; }
+    }
+
+    private bool notification;
+
+    public bool Notification
+    {
+        get { return notification; }
+        set { notification = value; }
+    }
+
+    private string signature;
+
+    public string Signature
+    {
+        get { return signature; }
+        set { signature = value; }
+    }
+
+    private bool autoCreateContact;
+
+    public bool AutoCreateContact
+    {
+        get { return autoCreateContact; }
+        set { autoCreateContact = value; }
+    }
+}
+public class Mail
+{
+    public static long nextComposeID;
+    public Mail()
+    {
+        composeID = generateNextComposeID(); //
+    }
+    public long generateNextComposeID()
+    {
+        return nextComposeID;
+    }
+    private long composeID;
+
+    public long ComposeID
+    {
+        get { return composeID; }
+        set { composeID = value; }
+    }
+    private User sender; //
+
+    public User Sender
+    {
+        get { return sender; }
+        set { sender = value; }
+    }
+    private List<User> receiver;
+
+    public List<User> Receiver
+    {
+        get { return receiver; }
+        set { receiver = value; }
+    }
+    private List<User> cc;
+
+    public List<User> Cc
+    {
+        get { return cc; }
+        set { cc = value; }
+    }
+    private List<User> bcc;
+
+    public List<User> Bcc
+    {
+        get { return bcc; }
+        set { bcc = value; }
+    }
+    private Priority mailPriority;
+
+    public Priority MailPriority
+    {
+        get { return mailPriority; }
+        set { mailPriority = value; }
+    }
+    private bool starred;
+
+    public bool Starred
+    {
+        get { return starred; }
+        set { starred = value; }
+    }
+    private string subject;
+
+    public string Subject
+    {
+        get { return subject; }
+        set { subject = value; }
+    }
+    private DateTime send_time;
+
+    public DateTime Send_time
+    {
+        get { return send_time; }
+        set { send_time = value; }
+    }
+    private List<string> attachedFiles;    // Data Type in Database .....?
+
+    public List<string> AttachedFiles
+    {
+        get { return attachedFiles; }
+        set { attachedFiles = value; }
+    }
+    private string mailBody;
+
+    public string MailBody
+    {
+        get { return mailBody; }
+        set { mailBody = value; }
+    }
+    private DateTime lastAutoSaved;
+
+    public DateTime LastAutoSaved
+    {
+        get { return lastAutoSaved; }
+        set { lastAutoSaved = value; }
+    }
+    private bool isDraft;
+
+    public bool IsDraft
+    {
+        get { return isDraft; }
+        set { isDraft = value; }
+    }
+    private bool isSpam;
+
+    public bool IsSpam
+    {
+        get { return isSpam; }
+        set { isSpam = value; }
+    }
+
+    private bool isThrash;
+
+    public bool IsThrash
+    {
+        get { return isThrash; }
+        set { isThrash = value; }
+    }
+
+    public void sendMail()
+    {
+        string str = "Insert into Mail values(" + this.composeID + "," + nextComposeID + ",'" + this.sender + "','" + this.mailPriority + "','" + this.starred + "','" + this.subject + "','" + this.send_time + "','" + this.mailBody + "','" + this.lastAutoSaved + "','" + this.isDraft + "','" + this.isSpam + "','" + this.isThrash + "')";
+        ConnectionMyMail x = new ConnectionMyMail();
+        x.exec(str);
+        foreach (User u in this.Bcc)
+        {
+            str = "Insert into bccOfMail values(" + this.ComposeID + ",'" + u.Username + "')";
+            x.exec(str);
+        }
+        foreach (User u in this.Cc)
+        {
+            str = "Insert into ccOfMail values(" + this.ComposeID + ",'" + u.Username + "')";
+            x.exec(str);
+        }
+        foreach (User u in this.receiver)
+        {
+            str = "Insert into ReceiversOfMail values(" + this.ComposeID + ",'" + u.Username + "')";
+            x.exec(str);
+        }
+    }
+
+
+
+
+    public long composeMail()
+    {
+        return composeID;
+    }
+    //Transfer to trash
+    public bool discardMail()
+    {
+        ConnectionMyMail x = new ConnectionMyMail();
+        try
+        {
+            string query = "Delete from Mail where composeId=" + this.composeID + "";
+            x.exec(query);
+            return true;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+    }
+    public void saveAsDraft()
+    {
+        ConnectionMyMail x = new ConnectionMyMail();
+        string query = "Update Mail set IsDraft=true where composeId=" + this.composeID + "";
+        x.exec(query);
+        this.IsDraft = true;
+    }
+    public void markAsSpam()
+    {
+        ConnectionMyMail x = new ConnectionMyMail();
+        string query = "Update Mail set IsSpam=true where composeId=" + this.composeID + "";
+        x.exec(query);
+        this.IsSpam = true;
+    }
+    public static List<Mail> getMail(string username)
+    {
+        List<Mail> m = new List<Mail>();
+        ConnectionMyMail x = new ConnectionMyMail();
+        string str = "Select * from Mail where composeId in(Select composeId from bccOfMail where userId='" + username + "'";
+        str += " or Select composeId from ccOfMail where userId='" + username + "' or Select composeId from ReceiversOfMail where userId='" + username;
+        str += "')";
+        DataSet ds = new DataSet();
+
+        ds = x.search(str);
+        for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+        {
+            Mail temp = new Mail();
+            temp.mailBody = ds.Tables[0].Rows[i][3].ToString();
+            temp.starred = (Boolean)ds.Tables[0].Rows[i][4];
+            temp.subject = ds.Tables[0].Rows[i][5].ToString();
+            temp.send_time = (DateTime)ds.Tables[0].Rows[i][6];
+            temp.mailBody = ds.Tables[0].Rows[i][7].ToString();
+            temp.lastAutoSaved = (DateTime)ds.Tables[0].Rows[i][8];
+            temp.isDraft = (Boolean)ds.Tables[0].Rows[i][9];
+            temp.isSpam = (Boolean)ds.Tables[0].Rows[i][10];
+            temp.isThrash = (Boolean)ds.Tables[0].Rows[i][11];
+            m[i] = temp;
+        }
+        return m;
+    }
+
+    public static Mail getMailDetail(long composeId)
+    {
+        Mail mailDetail = new Mail();
+        ConnectionMyMail x = new ConnectionMyMail();
+        string str = "Select * from Mail where composeId=" + composeId + "";
+        DataSet ds = new DataSet();
+        DataSet dsRecv, dsUser;
+        ds = x.search(str);
+        if (ds.Tables[0].Rows.Count > 0)
+        {
+            mailDetail.mailBody = ds.Tables[0].Rows[0][3].ToString();
+            mailDetail.starred = (Boolean)ds.Tables[0].Rows[0][4];
+            mailDetail.subject = ds.Tables[0].Rows[0][5].ToString();
+            mailDetail.send_time = (DateTime)ds.Tables[0].Rows[0][6];
+            mailDetail.mailBody = ds.Tables[0].Rows[0][7].ToString();
+            mailDetail.lastAutoSaved = (DateTime)ds.Tables[0].Rows[0][8];
+            mailDetail.isDraft = (Boolean)ds.Tables[0].Rows[0][9];
+            mailDetail.isSpam = (Boolean)ds.Tables[0].Rows[0][10];
+            mailDetail.isThrash = (Boolean)ds.Tables[0].Rows[0][11];
+        }
+        List<User> listOfReceiver = new List<User>();
+        str = "select * from ReceiverOfMail where composeId=" + composeId + "";
+        ds = new DataSet();
+        for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+        {
+            str = "select * from User where userId='" + ds.Tables[0].Rows[i][0].ToString() + "'";
+            dsRecv = new DataSet();
+            dsRecv = x.search(str);
+            User userDetail = new User();
+            userDetail.Username = dsRecv.Tables[0].Rows[j][0].ToString();
+            userDetail.Firstname = dsRecv.Tables[0].Rows[j][2].ToString();
+            userDetail.Lastname = dsRecv.Tables[0].Rows[j][3].ToString();
+            userDetail.Gender = (Gender)dsRecv.Tables[0].Rows[j][4];
+            userDetail.DateOfBirth = (DateTime)dsRecv.Tables[0].Rows[j][5];
+            userDetail.PhotoFile = dsRecv.Tables[0].Rows[j][6].ToString();
+            userDetail.PhoneNumber = dsRecv.Tables[0].Rows[j][7].ToString();
+            userDetail.SecurityQuestion = dsRecv.Tables[0].Rows[j][8].ToString();
+            userDetail.Answer = dsRecv.Tables[0].Rows[j][9].ToString();
+            userDetail.LStatus = (LoginStatus)dsRecv.Tables[0].Rows[j][10];
+            userDetail.Astatus = (AccountStatus)dsRecv.Tables[0].Rows[j][11];
+            listOfReceiver.Add(userDetail);
+        }
+        mailDetail.receiver = listOfReceiver;
+        List<User> listOfcc = new List<User>();
+        str = "select * from ccOfMail where composeId=" + composeId + "";
+        ds = new DataSet();
+        for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+        {
+            str = "select * from User where userId='" + ds.Tables[0].Rows[i][0].ToString() + "'";
+            dsRecv = new DataSet();
+            dsRecv = x.search(str);
+            User userDetail = new User();
+            userDetail.Username = dsRecv.Tables[0].Rows[j][0].ToString();
+            userDetail.Firstname = dsRecv.Tables[0].Rows[j][2].ToString();
+            userDetail.Lastname = dsRecv.Tables[0].Rows[j][3].ToString();
+            userDetail.Gender = (Gender)dsRecv.Tables[0].Rows[j][4];
+            userDetail.DateOfBirth = (DateTime)dsRecv.Tables[0].Rows[j][5];
+            userDetail.PhotoFile = dsRecv.Tables[0].Rows[j][6].ToString();
+            userDetail.PhoneNumber = dsRecv.Tables[0].Rows[j][7].ToString();
+            userDetail.SecurityQuestion = dsRecv.Tables[0].Rows[j][8].ToString();
+            userDetail.Answer = dsRecv.Tables[0].Rows[j][9].ToString();
+            userDetail.LStatus = (LoginStatus)dsRecv.Tables[0].Rows[j][10];
+            userDetail.Astatus = (AccountStatus)dsRecv.Tables[0].Rows[j][11];
+            listOfcc.Add(userDetail);
+        }
+        mailDetail.cc = listOfReceiver;
+        return mailDetail;
+    }
+    public static List<Mail> getInbox(string username)
+    {
+        List<Mail> mails = new List<Mail>();
+        foreach (Mail m in getMail(username))
+        {
+            if (!m.isDraft && !m.isSpam && !m.isThrash)
+                mails.Add(m);
+        }
+        return mails;
+    }
+    public static List<Mail> getSpamMail(string username)
+    {
+        List<Mail> mails = new List<Mail>();
+        foreach (Mail m in getMail(username))
+        {
+            if (m.IsSpam)
+                mails.Add(m);
+        }
+        return mails;
+    }
+    public static List<Mail> getTrashMail(string username)
+    {
+        List<Mail> mails = new List<Mail>();
+        foreach (Mail m in getMail(username))
+        {
+            if (m.IsThrash)
+                mails.Add(m);
+        }
+        return mails;
+
+    }
+    public static List<Mail> getsentMails(string username)
+    {
+        List<Mail> mails = new List<Mail>();
+        string query = "Select * from Mail where sender='" + username + "' ";
+        DataTable dt = new DataTable();
+        foreach (DataRow dr in dt.Rows)
+        {
+            Mail m = new Mail();
+            m.ComposeID = long.Parse(dr[0].ToString());
+            mails.Add(m);
+        }
+        return mails;
+    }
+    public static List<Mail> getDrafts(string username)
+    {
+        List<Mail> mails = new List<Mail>();
+        foreach (Mail m in getMail(username))
+        {
+            if (m.IsDraft)
+                mails.Add(m);
+        }
+        return mails;
+
+    }
+    public static List<Mail> search(string keyword, string username)
+    {
+        Dictionary<long, Mail> mailbox = new Dictionary<long, Mail>();
+        foreach (Mail m in getMail(username))
+        {
+            if (m.Subject.ToLower().Contains(keyword.ToLower()) || m.mailBody.ToLower().Contains(keyword.ToLower()))
+            {
+                if (!mailbox.ContainsKey(m.ComposeID))
+                    mailbox.Add(m.ComposeID, m);
+                continue;
+            }
+            foreach (User u in m.cc)
+            {
+                if (u.Username.Contains(keyword))
+                {
+                    if (!mailbox.ContainsKey(m.ComposeID))
+                        mailbox.Add(m.ComposeID, m);
+                }
+            }//cc
+            foreach (User u in m.bcc)
+            {
+                if (u.Username.ToLower().Contains(keyword.ToLower()))
+                {
+                    if (!mailbox.ContainsKey(m.ComposeID))
+                        mailbox.Add(m.ComposeID, m);
+                }
+            }//bcc
+            foreach (User u in m.Receiver)
+            {
+                if (u.Username.ToLower().Contains(keyword.ToLower()))
+                {
+                    if (!mailbox.ContainsKey(m.ComposeID))
+                        mailbox.Add(m.ComposeID, m);
+                }
+            }//receiver
+
+        }//mails
+        return mailbox.Values.ToList<Mail>();
+    }//function
+
+}
+
+
+
+
+
+
+
