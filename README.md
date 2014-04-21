@@ -27,4 +27,4 @@ After installing above software
   </appSettings>`
 </code>
 </pre>
->Modify above tag value as per your MS SQl Server settings.
+Modify above tag value as per your MS SQl Server settings.
