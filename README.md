@@ -10,11 +10,11 @@ Pre-requisite Tools and Technology
   
 After installing above software
 * Microsoft SQL Server 2008
-1 Create new Database
-2 Restore .bak file means backup file in database, .bak file placed at ProjMailDrive/sql, use latest updated .bak file.
+1. Create new Database
+2. Restore .bak file means backup file in database, .bak file placed at ProjMailDrive/sql, use latest updated .bak file.
 
 * Project Settings in Visual studio
-1 Now change web.cong file which is XML Configuration file, it placed    at ProjMailDrive. Open file and modify it for database settings
+1. Now change web.cong file which is XML Configuration file, it placed    at ProjMailDrive. Open file and modify it for database settings
 <pre>
 <code>
 `<appSettings>
