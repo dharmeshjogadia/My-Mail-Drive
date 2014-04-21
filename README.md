@@ -9,7 +9,7 @@ Pre-requisite Tools and Technology
 * Microsoft SQL Server 2008
   
 After installing above software
-> In Microsoft SQL Server 2008
+>In Microsoft SQL Server 2008
 1. Create new Database
 2. Restore .bak file means backup file in database, .bak file placed at ProjMailDrive/sql, use latest updated .bak file.
 
