@@ -32,5 +32,5 @@ Modify above tag value as per your MS SQl Server settings.
 
 >Use Tools and Technology in Project
 * HTML,HTML5,CSS3 and jQuery for front and designing
-* [Bootstar3](http://getbootstrap.com/) for responsive frontedn designing
+* [Bootstrap3](http://getbootstrap.com/) for responsive frontend designing
 * [CkEdter](http://docs.cksource.com/CKEditor_3.x/Developers_Guide/ASP.NET/Integration_Beginners) for well formated Mail writting
