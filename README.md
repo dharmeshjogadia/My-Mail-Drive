@@ -5,8 +5,8 @@ My-Mail-Drive
 Intra-communication mail system for any organization and also provide storage drive for each user.
 
 Pre-requisite Tools and Technology
-* visual studio 2010
-* Microsoft SQL Server 2008
+* [Visual studio 2010](http://www.microsoft.com/en-in/download/details.aspx?id=23507)
+* [Microsoft SQL Server 2008] (http://www.microsoft.com/en-in/download/details.aspx?id=12548)
   
 After installing above software
 >In Microsoft SQL Server 2008
